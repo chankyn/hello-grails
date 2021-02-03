@@ -24,5 +24,12 @@ pipeline {
                 }
             }
         }
+        stage('iTest') {
+            steps {
+                withGradle {
+                    sh './gradlew -Dgeb.env=firefoxHeadless iT'
+                }
+            }
+        }
     }
 }
