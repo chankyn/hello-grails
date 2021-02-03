@@ -36,5 +36,25 @@ pipeline {
                 }
             }
         }
+        stage('codenarc') {
+            steps {
+                withGradle {
+                    sh './gradlew codenarcMain'
+                    sh './gradlew codenarcTest'
+                    sh './gradlew codenarcIntegrationTest'
+                }
+            }
+            post {
+                always {
+                    publishHTML([allowMissing: false,
+                    alwaysLinkToLastBuild: false, 
+                    keepAll: false, 
+                    reportDir: 'build/reports/codenarc/', 
+                    reportFiles: 'integrationTest.html, main.html, test.html', 
+                    reportName: 'CodeNarc Reports', 
+                    reportTitles: 'integrationTest, main, test'])
+                }
+            }
+        }
     }
 }
