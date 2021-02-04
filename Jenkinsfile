@@ -26,13 +26,10 @@ pipeline {
         }
         stage('iTest') {
             steps {
-                withGradle {
-                    sh './gradlew -Dgeb.env=firefoxHeadless iT'
-                }
-            }
-            post {
-                always {
-                    junit 'build/test-results/integrationTest/TEST-*.xml'
+                configFileProvider([configFile(fileId: 'hello-grails-gradle.properties', targetLocation: 'gradle.properties')]) {
+                    withGradle {
+                        sh './gradlew iT'
+                    }
                 }
             }
         }
