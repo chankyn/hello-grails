@@ -32,6 +32,11 @@ pipeline {
                     }
                 }
             }
+            post {
+                always {
+                    junit 'build/test-results/integrationTest/TEST-*.xml'
+                }
+            }
         }
         stage('codenarc') {
             steps {
