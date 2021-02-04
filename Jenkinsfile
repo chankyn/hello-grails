@@ -27,7 +27,7 @@ pipeline {
         stage('iTest') {
             steps {
                 withGradle {
-                    sh './gradlew clean -Dgeb.env=firefoxHeadless iT'
+                    sh './gradlew -Dgeb.env=firefoxHeadless iT'
                 }
             }
             post {
