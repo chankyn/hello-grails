@@ -46,7 +46,7 @@ pipeline {
                     sh './gradlew codenarcIntegrationTest'
                     sh './gradlew check'
                 }
-                withSonarQubeEnv(credentialsId: 'local') {
+                withSonarQubeEnv('local') {
                     withGradle {
                         sh './gradlew sonarqube'
                     }
