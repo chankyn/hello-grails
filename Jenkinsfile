@@ -38,23 +38,30 @@ pipeline {
                 }
             }
         }
-        stage('codenarc') {
+        stage('QA') {
             steps {
                 withGradle {
                     sh './gradlew codenarcMain'
                     sh './gradlew codenarcTest'
                     sh './gradlew codenarcIntegrationTest'
+                    sh './gradlew check'
+                }
+                withSonarQubeEnv(credentialsId: 'local') {
+                    withGradle {
+                        sh './gradlew sonarqube'
+                    }
                 }
             }
             post {
                 always {
-                    publishHTML([allowMissing: false,
-                    alwaysLinkToLastBuild: false, 
-                    keepAll: false, 
-                    reportDir: 'build/reports/codenarc/', 
-                    reportFiles: 'integrationTest.html, main.html, test.html', 
-                    reportName: 'CodeNarc Reports', 
-                    reportTitles: 'integrationTest, main, test'])
+                    recordIssues(
+                        tools: [
+                            pmdParser(pattern: 'build/reports/pmd/*.xml'),
+                            checkStyle(pattern: 'build/reports/checkstyle/*.xml'),
+                            codeNarc(pattern: 'build/reports/codenarc/*.xml')
+                        ]
+                    )
+
                 }
             }
         }

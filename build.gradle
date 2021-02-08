@@ -1,12 +1,14 @@
 buildscript {
     repositories {
         maven { url "https://repo.grails.org/grails/core" }
+
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.2"
         classpath "org.grails.plugins:hibernate5:7.0.4"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.3.1"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.1.1"
     }
 }
 
@@ -20,6 +22,9 @@ apply plugin:"org.grails.grails-web"
 apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"com.bertramlabs.asset-pipeline"
 apply plugin:"org.grails.grails-gsp"
+apply plugin:"pmd"
+apply plugin:"org.sonarqube"
+apply plugin:"checkstyle"
 
 repositories {
     maven { url "https://repo.grails.org/grails/core" }
@@ -77,6 +82,8 @@ dependencies {
     testCompile "org.seleniumhq.selenium:selenium-remote-driver:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
     testCompile "org.seleniumhq.selenium:selenium-support:$seleniumVersion"
+
+
 }
 
 webdriverBinaries {
@@ -121,3 +128,10 @@ apply from: "${rootProject.projectDir}/gradle/codenarc.gradle"
 codenarcMain.group 'static analysis'
 codenarcTest.group 'static analysis'
 codenarcIntegrationTest.group 'static analysis'
+
+pmd {
+    ignoreFailures = true
+}
+checkstyle {
+    ignoreFailures = true
+}
