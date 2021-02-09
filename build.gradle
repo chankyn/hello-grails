@@ -38,6 +38,7 @@ configurations {
 }
 
 dependencies {
+    compile 'org.apache.maven.plugins:maven-checkstyle-plugin:3.1.2'
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     compile "org.springframework.boot:spring-boot-starter-logging"
     compile "org.springframework.boot:spring-boot-autoconfigure"
@@ -129,6 +130,9 @@ codenarcMain.group 'static analysis'
 codenarcTest.group 'static analysis'
 codenarcIntegrationTest.group 'static analysis'
 
+codenarc {
+    reportFormat = 'xml'
+}
 pmd {
     ignoreFailures = true
 }
